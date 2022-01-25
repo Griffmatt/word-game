@@ -1,0 +1,72 @@
+.keyboard{
+    margin:5vw;
+}
+
+.keys{
+    display:flex;
+    justify-content: center;
+}
+
+.key{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(209, 215, 218);
+    margin: 3px;
+    font-size: .85rem;
+    font-weight:500;
+    max-width: 40px;
+    width: 7.6vw;
+    min-width: 22px;
+    height:60px;
+    border-radius: 5px;
+    border: none;
+}
+
+.enter-key{
+    min-width:50px;
+    max-width: 80px
+}
+
+.delete-key{
+    min-width:30px;
+    max-width: 50px;
+}
+
+.key:hover{
+    background-color: rgb(199, 204, 207);
+}
+
+.DEL:hover{
+    background-color: rgb(219, 105, 105)
+}
+.ENTER:hover{
+    background-color: rgb(67, 151, 230);
+}
+
+.key-wrong-letter{
+    background-color: gray;
+    color: white
+}
+
+.key-inWord-letter{
+    background-color: rgb(190, 168, 42);
+    color: white
+}
+
+.key-correct-letter{
+    background-color: rgb(20, 148, 20);
+    color: white
+}
+
+.key-wrong-letter:hover{
+    background-color: rgb(109, 109, 109);
+}
+
+.key-inWord-letter:hover{
+    background-color: rgb(184, 162, 41);
+}
+
+.key-correct-letter:hover{
+    background-color: rgb(18, 139, 18);
+}

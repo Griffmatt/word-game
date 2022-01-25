@@ -1,0 +1,27 @@
+.header{
+    display: flex;
+    justify-content:center
+}
+
+.header-container{
+    border-bottom: 2px solid black;   
+    width: 27rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.header-help{
+    height: 27px;
+    width: auto;
+    padding-top: 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+.header-settings{
+    height: 27px;
+    width: auto;
+    padding-top: 10px;
+    margin-right:5px;
+}

@@ -1,0 +1,42 @@
+.gameboard{
+    margin: 5vw;
+}
+
+.gameboard-row{
+    display: flex;
+    justify-content: center;
+}
+
+.gameboard-cell{
+    border: 2px solid rgb(218, 218, 218);
+    background-color: white;
+    width: 15.6vw;
+    height: 15.6vw;
+    max-width: 53px;
+    max-height: 53px;
+    margin: 3px;
+    color: black;
+    font-size: 2.2rem;
+    font-weight: 700;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameboard-cell-correct{
+    background-color: rgb(20, 148, 20);
+    color: white;
+    border: none;
+}
+
+.gameboard-cell-inWord{
+    background-color: rgb(190, 168, 42);
+    color: white;
+    border: none;
+}
+
+.gameboard-cell-wrong{
+    background-color: rgb(117, 117, 117);
+    color: white;
+    border: none;
+}
