@@ -1,10 +1,10 @@
 .header{
     display: flex;
-    justify-content:center
+    justify-content:center;
 }
 
 .header-container{
-    border-bottom: 2px solid black;   
+    border-bottom: 2px solid rgb(199, 199, 199);   
     width: 27rem;
     display: flex;
     justify-content: space-between;
@@ -18,10 +18,17 @@
     padding-top: 10px;
     margin-left: 5px;
     cursor: pointer;
+    color:white;
 }
 .header-settings{
     height: 27px;
     width: auto;
     padding-top: 10px;
     margin-right:5px;
+    cursor: pointer;
+    color:white;
+}
+
+.icon-black{
+    color:black;
 }

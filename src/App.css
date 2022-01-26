@@ -1,3 +1,11 @@
 .App {
   text-align: center;
 }
+
+.app-background-dark{
+  background-color: black;
+}
+
+body > .app-background-light{
+  background-color: white;
+}

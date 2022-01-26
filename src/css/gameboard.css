@@ -1,5 +1,5 @@
 .gameboard{
-    margin: 5vw;
+    margin-top: 5vw;
 }
 
 .gameboard-row{
@@ -8,14 +8,12 @@
 }
 
 .gameboard-cell{
-    border: 2px solid rgb(218, 218, 218);
-    background-color: white;
+    border: 2px solid rgb(199, 199, 199);
     width: 15.6vw;
     height: 15.6vw;
     max-width: 53px;
     max-height: 53px;
     margin: 3px;
-    color: black;
     font-size: 2.2rem;
     font-weight: 700;
     display:flex;

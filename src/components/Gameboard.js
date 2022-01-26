@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Modal} from 'reactstrap'
 import {WORDS} from '../words/words'
 import {VALIDGUESSES} from '../words/validguesses'
 
+import Modals from './Modals';
 
-function Gameboard(){
+
+function Gameboard({darkMode}){
     const keysRowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
     const keysRowTwo = [ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
     const keysRowThree = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
@@ -21,6 +22,8 @@ function Gameboard(){
     const [inWordLetters, setInWordLetters] = useState([])
     const [guesses, setGuesses] = useState(0)
     const [solution, setSolution] = useState("")
+    const [correctSolution, setCorrectSolution] = useState("")
+    const [message, setMessage] = useState("")
 
     useEffect(()=> {
         let newRows = []
@@ -45,8 +48,24 @@ function Gameboard(){
         }
         else if(guessCol === 0){
             setGuess('')
+            console.log(solution)
         }
     }, [rows, guess, guessCol, guessRow, solution])
+
+    const handleReset = () =>{
+        setIsCorrect(false)
+        setGameOver(false)
+    
+        setRows([])
+        setGuessRow(0);
+        setGuessCol(0);
+        setGuess([])
+        setwrongLetters([])
+        setCorrectLetters([])
+        setInWordLetters([])
+        setGuesses(0)
+
+    }
 
     function Gameboardrow() {
             return(
@@ -66,70 +85,40 @@ function Gameboard(){
             <div className="keyboard">
             <div className="keys">
                 {keysRowOne.map((x) => {return(
-                    <button className={`key  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'} `} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
+                    <button className={`key ${darkMode?"key-light":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'} `} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
                 )})}
             </div>
             <div className="keys">
                 {keysRowTwo.map((x) => {return(
-                    <button className={`key ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
+                    <button className={`key ${darkMode?"key-light":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
                 )})}
             </div>
             <div className="keys">
-                <button className={`key enter-key`} onClick={(() => handleSubmit())}>ENTER</button>
+                <button className={`key enter-key ${darkMode?"key-light":""} `} onClick={(() => handleSubmit())}>ENTER</button>
                 {keysRowThree.map((x) => {return(
-                    <button className={`key ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => handleClick(e)}>{x}</button>
+                    <button className={`key ${darkMode?"key-light":""} ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => handleClick(e)}>{x}</button>
                 )})}
-                <button className={`key delete-key`} onClick={(() => handleDel())} >DEL</button>
+                <button className={`key delete-key ${darkMode?"key-light":""}`} onClick={(() => handleDel())} >DEL</button>
             </div>
         </div>
     )}
 
-    function LoseModal({handleReset}){
+    function Alert(){
         return(
-            <Modal isOpen={gameOver}>
-                <div className="modal-content">
-                    <div className="modal-title">
-                        <h1>You Lose</h1>
-                    </div>  
-                    <div className="modal-body">
-                        <div>
-                            <h2>Answer: {solution}</h2>
-                        </div>
-                        <div>
-                            <button onClick={(() => handleReset())}>Try Again?</button>
-                        </div>
-                    </div>
+            <div className="invalid-alert">
+                <div className="invalid-message">
+                    {message}
                 </div>
-            </Modal>
-        )
-    }
-
-    function WinModal({handleReset}){
-        return(
-            <Modal isOpen={isCorrect}>
-                <div className="modal-content">
-                    <div className="modal-title">
-                        <h1>You Win</h1>
-                    </div>  
-                    <div className="modal-body">
-                        <div>
-                            <h2>Answer: {solution}</h2>
-                        </div>
-                        <div>
-                            <button onClick={(() => handleReset())}>Try Again?</button>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
+            </div>
         )
     }
     
-
     const handleClick = (e) => {
         if(gameOver){
 
         }
         else if(guessCol<5 && !isCorrect){
+            setCorrectSolution(solution)
             const currentRow = [...rows]
             currentRow[guessRow][guessCol].letter = e.target.value
             setRows(currentRow)
@@ -208,29 +197,21 @@ function Gameboard(){
         }
         }
         else{
-            alert("Enter a valid word")
+            if(guessCol !==5){
+                setMessage("Not enough letters")
+            }
+            else{
+                setMessage("Not in word list")
+            }
         }
-    }
-
-    const handleReset = () =>{
-        setRows([])
-        setGuessRow(0);
-        setGuessCol(0);
-        setIsCorrect(false)
-        setGameOver(false)
-        setGuess([])
-        setwrongLetters([])
-        setCorrectLetters([])
-        setInWordLetters([])
-        setGuesses(0)
     }
 
     return(
         <div className="gameboard">
             <Gameboardrow />
             <Keyboardrow/>
-            <WinModal handleReset={handleReset}/>
-            <LoseModal handleReset={handleReset}/>
+            <Modals handleReset={handleReset} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode}/>
+            <Alert/>
         </div>
     )
 }
