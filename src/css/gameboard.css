@@ -8,7 +8,7 @@
 }
 
 .gameboard-cell{
-    border: 2px solid rgb(199, 199, 199);
+    border: 2px solid rgb(141, 141, 141);
     width: 15.6vw;
     height: 15.6vw;
     max-width: 53px;

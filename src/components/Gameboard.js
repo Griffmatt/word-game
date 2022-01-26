@@ -24,6 +24,7 @@ function Gameboard({darkMode}){
     const [solution, setSolution] = useState("")
     const [correctSolution, setCorrectSolution] = useState("")
     const [message, setMessage] = useState("")
+    const [hiddenAlert, setHiddenAlert] = useState(true)
 
     useEffect(()=> {
         let newRows = []
@@ -105,10 +106,8 @@ function Gameboard({darkMode}){
 
     function Alert(){
         return(
-            <div className="invalid-alert">
-                <div className="invalid-message">
-                    {message}
-                </div>
+            <div className={`invalid-alert ${darkMode?"alert-light":""}`} hidden={hiddenAlert} >
+                {message}
             </div>
         )
     }
@@ -135,6 +134,11 @@ function Gameboard({darkMode}){
             setGuessCol(guessCol - 1)
             setGuess(guess.slice(0,-1))
         }
+    }
+
+    const handleMessage = () => {
+        setHiddenAlert(true)
+        setMessage("")
     }
 
     const handleSubmit = () => {
@@ -198,13 +202,18 @@ function Gameboard({darkMode}){
         }
         else{
             if(guessCol !==5){
+                setHiddenAlert(false)
                 setMessage("Not enough letters")
+                setTimeout(handleMessage, 2500)
             }
             else{
+                setHiddenAlert(false)
                 setMessage("Not in word list")
+                setTimeout(handleMessage, 2500)
             }
         }
     }
+
 
     return(
         <div className="gameboard">
