@@ -14,13 +14,15 @@ import Header from './components/Header';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false)
+  const [colorBlind, setColorBlind] = useState(false)
+
   document.body.style.backgroundColor = `${darkMode? "rgb(32, 32, 32)": "white"}`;
   document.body.style.color = `${!darkMode? "rgb(32, 32, 32)": "white"}`;
 
   return (
     <div className="App">
-        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Gameboard darkMode={darkMode} />
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} setColorBlind={setColorBlind} colorBlind={colorBlind}/>
+        <Gameboard darkMode={darkMode} colorBlind={colorBlind} />
     </div>
   );
 }

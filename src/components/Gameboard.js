@@ -5,7 +5,7 @@ import {VALIDGUESSES} from '../words/validguesses'
 import Modals from './Modals';
 
 
-function Gameboard({darkMode}){
+function Gameboard({darkMode, colorBlind}){
     const keysRowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
     const keysRowTwo = [ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
     const keysRowThree = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
@@ -75,7 +75,7 @@ function Gameboard({darkMode}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`gameboard-cell-${colIndex} gameboard-cell gameboard-cell-${col.correct}`} key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""}`} key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -86,20 +86,20 @@ function Gameboard({darkMode}){
             <div className="keyboard">
             <div className="keys">
                 {keysRowOne.map((x) => {return(
-                    <button className={`key ${darkMode?"key-light":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'} `} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
+                    <button className={`key ${darkMode?"key-dark-mode":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}`}  key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
                 )})}
             </div>
             <div className="keys">
                 {keysRowTwo.map((x) => {return(
-                    <button className={`key ${darkMode?"key-light":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
+                    <button className={`key ${darkMode?"key-dark-mode":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}` }  key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
                 )})}
             </div>
             <div className="keys">
-                <button className={`key enter-key ${darkMode?"key-light":""} `} onClick={(() => handleSubmit())}>ENTER</button>
+                <button className={`key enter-key ${darkMode?"key-dark-mode ":""} `} onClick={(() => handleSubmit())}>ENTER</button>
                 {keysRowThree.map((x) => {return(
-                    <button className={`key ${darkMode?"key-light":""} ${wrongLetters.includes(x) && 'key-wrong-letter'} ${correctLetters.includes(x) && 'key-correct-letter'} ${inWordLetters.includes(x) && 'key-inWord-letter'}`} key={x} value={x} onClick={(e) => handleClick(e)}>{x}</button>
+                    <button className={`key ${darkMode?"key-dark-mode ":""} ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}`} key={x} value={x} onClick={(e) => handleClick(e)}>{x}</button>
                 )})}
-                <button className={`key delete-key ${darkMode?"key-light":""}`} onClick={(() => handleDel())} >DEL</button>
+                <button className={`key delete-key ${darkMode?"key-dark-mode ":""}`} onClick={(() => handleDel())} >DEL</button>
             </div>
         </div>
     )}
@@ -122,7 +122,8 @@ function Gameboard({darkMode}){
             currentRow[guessRow][guessCol].letter = e.target.value
             setRows(currentRow)
             setGuessCol(guessCol + 1)
-            setGuess(`${guess}${e.target.value}`)        
+            setGuess(`${guess}${e.target.value}`) 
+         
         }
     }
 
@@ -218,7 +219,7 @@ function Gameboard({darkMode}){
     return(
         <div className="gameboard">
             <Gameboardrow />
-            <Keyboardrow/>
+            <Keyboardrow />
             <Modals handleReset={handleReset} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode}/>
             <Alert/>
         </div>

@@ -1,7 +1,7 @@
 import { Modal } from 'reactstrap';
 import React, {useState} from 'react';
 
-function Header({setDarkMode, darkMode}) {
+function Header({setDarkMode, darkMode, setColorBlind, colorBlind}) {
 
   const [infoModalOpen, setInfoModalOpen] = useState(false)
   const [settingsModalOpen, setSettingsModalOpen] = useState(false)
@@ -18,9 +18,9 @@ function Header({setDarkMode, darkMode}) {
   return (
     <div className="header">
         <div className="header-container">
-           <i className={`${!darkMode?"icon-black":""} header-help fa fa-question-circle`}  onClick={(()=> handleClickInfo())}/>
+           <i className={`${!darkMode?"icon-dark":""} header-help fa fa-question-circle`}  onClick={(()=> handleClickInfo())}/>
             <h1>Word Game</h1>
-            <i className={`${!darkMode?"icon-black":""} header-settings fa fa-cog`} onClick={(()=> handleClickSettings())}/>
+            <i className={` header-settings ${!darkMode?"icon-dark":""} fa fa-cog`} onClick={(()=> handleClickSettings())}/>
         </div>
       <Modal isOpen={infoModalOpen} toggle={handleClickInfo}>
         <div className={`${darkMode?"modal-background-dark":""} info-modal`}>
@@ -72,7 +72,7 @@ function Header({setDarkMode, darkMode}) {
         <div className="settings-mode">
           <div>
             <h2>Hard Mode</h2>
-            <p>Any revealed hints must be used in subsequent guesses</p>
+            <p>Any revealed hints must be used in subsequent guesses(not finished yet)</p>
           </div>
           <label className="switch">
             <input type="checkbox"/>
@@ -85,7 +85,7 @@ function Header({setDarkMode, darkMode}) {
           </div>
           <label className="switch">
             <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`}/>
-            <span className={`slider round`} onClick={(()=> {setDarkMode(!darkMode)})}></span>
+            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})}></span>
           </label>
         </div>
         <div className="settings-mode">
@@ -94,8 +94,8 @@ function Header({setDarkMode, darkMode}) {
             <p>High contrast colors</p>
           </div>
           <label className="switch">
-            <input type="checkbox"/>
-            <span className="slider round"></span>
+            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`}/>
+            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})}></span>
           </label>
         </div>
         </div>
