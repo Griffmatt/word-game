@@ -23,6 +23,8 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [message, setMessage] = useState("")
     const [hiddenAlert, setHiddenAlert] = useState(true)
     const [shake, setShake] = useState(false)
+    const [flip, setFlip] = useState(false)
+    const [flipped, setFlipped] = useState(false)
 
     useEffect(()=> {
         let newRows = []
@@ -73,7 +75,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""}`} key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell ${flipped || rowIndex<guessRow?`gameboard-cell-${col.correct}`:""} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? "flip": ""}`}  key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -92,7 +94,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
 
     function Alert(){
         return(
-            <div className={`invalid-alert ${darkMode?"alert-light":""} fade`} hidden={hiddenAlert} >
+            <div className={`invalid-alert ${darkMode?"alert-light":""} fade-alert`} hidden={hiddenAlert} >
                 {message}
             </div>
         )
@@ -133,10 +135,25 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         }
     }
 
-    const handleAnimations = () => {
-        setShake(false)
+    const handleFade = () => {
+        setHiddenAlert(true)
     }
 
+    const handleAnimations = () => {
+        setShake(false)
+        setTimeout(handleFade, 2100)
+    }
+
+    const handleFlip = () => {
+        setFlipped(true)
+        setGuessRow(guessRow+1)
+        setGuessCol(0)
+        setGuesses(guesses + 1)
+        setFlip(false)
+          
+    }
+
+   
     const handleSubmit = () => {
         const currentRow=[...rows]
         const currentWrongLetters = []
@@ -148,6 +165,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         const guessX = [...guess]
         let hardCorrect = false
         let hardInWord = false
+        setFlipped(false)
 
         if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
         if(guessCol ===5){
@@ -171,7 +189,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     hardInWord = true
                 
             }
-            }}
+            }
             
             for(let i=0; i< 5; i++){
                 if(guessRow === 0){
@@ -193,6 +211,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     hardCorrect = true
                 }
                 }
+            }
 
             if((hardCorrect && hardInWord) || !hardMode){
 
@@ -208,7 +227,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             }
 
             for(let i=0; i< 5; i++){
-                console.log(i)
 
                 if(currentRow[guessRow][i].letter === solution[i]){
                     currentRow[guessRow][i].correct = 'correct'
@@ -239,15 +257,12 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                 setRows(currentRow)
             }
                 if(i===4){
-
+                    setFlip(true)
+                    setTimeout(handleFlip, 300)
+                    setwrongLetters(wrongLetters.concat(currentWrongLetters))
+                    setInWordLetters(inWordLetters.concat(currentInWordLetters))
+                    setCorrectLetters(correctLetters.concat(currentCorrectLetters))
                     
-                setGuessRow(guessRow+1)
-                setGuessCol(0)
-                setwrongLetters(wrongLetters.concat(currentWrongLetters))
-                setInWordLetters(inWordLetters.concat(currentInWordLetters))
-                setCorrectLetters(correctLetters.concat(currentCorrectLetters))
-                setGuesses(guesses + 1)
-                console.log(guesses)
                 }
             }}
                     

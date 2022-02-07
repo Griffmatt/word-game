@@ -10,7 +10,6 @@
     
     line-height: 50px;
     margin-left: -85px;
-    animation-delay: 500ms;
     border-radius: 4px;
     font-weight: 600;
 }
@@ -39,7 +38,7 @@
     background-color: white;
 }
 
-.fade{
+.fade-alert{
   animation: fadeOut 2.2s linear;
 }
 

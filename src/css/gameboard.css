@@ -19,6 +19,7 @@
     display:flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 .gameboard-cell-dark{
@@ -55,6 +56,10 @@
     animation: shake 350ms ease-in-out;
 }
 
+.flip{
+    animation: rotate 300ms linear;
+}
+
 @keyframes shake {
     10%{
         transform:translateX(-5%);
@@ -73,5 +78,15 @@
     }
     100%{
         transform:translateX(0%);
+    }
+}
+
+@keyframes rotate{
+    0%{
+        transform:  rotatex(0);
+    }
+
+    100%{
+        transform:  rotatex(90deg);
     }
 }
