@@ -60,6 +60,15 @@
     animation: rotate 300ms linear;
 }
 
+.grow{
+    animation: scale 200ms linear;
+    border-color: rgb(141, 145, 146);
+}
+
+.entered{
+    border-color: rgb(141, 145, 146);
+}
+
 @keyframes shake {
     10%{
         transform:translateX(-5%);
@@ -88,5 +97,16 @@
 
     100%{
         transform:  rotatex(90deg);
+    }
+}
+
+@keyframes scale{
+    0% {
+        transform: scale(1.0);
+        
+    }
+    100% {
+        transform: scale(1.1);
+    
     }
 }

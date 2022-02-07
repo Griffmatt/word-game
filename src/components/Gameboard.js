@@ -25,6 +25,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [shake, setShake] = useState(false)
     const [flip, setFlip] = useState(false)
     const [flipped, setFlipped] = useState(false)
+    const [deleted, setDeleted] = useState(false)
 
     useEffect(()=> {
         let newRows = []
@@ -75,7 +76,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell ${flipped || rowIndex<guessRow?`gameboard-cell-${col.correct}`:""} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? "flip": ""}`}  key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell ${flipped || rowIndex<guessRow?`gameboard-cell-${col.correct}`:""} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? "flip": ""} ${col.letter !== "" && colIndex +1 >= guessCol && !deleted && rowIndex === guessRow? "grow": rowIndex === guessRow && col.letter !== "" ?"entered":""}`}   key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -110,7 +111,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             if(!hiddenAlert){
                 setHiddenAlert(true)
             }
-
+            setDeleted(false)
             setCorrectSolution(solution)
             const currentRow = [...rows]
             currentRow[guessRow][guessCol].letter = e.target.value
@@ -126,7 +127,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             if(!hiddenAlert){
                 setHiddenAlert(true)
             }
-            
+            setDeleted(true)
             const currentRow = [...rows]
             currentRow[guessRow][guessCol-1].letter = ''
             setRows(currentRow)
@@ -166,6 +167,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         let hardCorrect = false
         let hardInWord = false
         setFlipped(false)
+        setDeleted(true)
 
         if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
         if(guessCol ===5){
@@ -177,12 +179,13 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                         hardInWord = true
                     }
                     else if(!guessX.includes(inWordLetters[j] )){
-                    console.log(inWordLetters.length)
+                    if(hiddenAlert===false){}
+                    else{
                     setHiddenAlert(false)
                     setMessage(`${inWordLetters[j]} must be included`)
                     setShake(true)
                     setTimeout(handleAnimations, 350)
-                    hardInWord = false
+                    hardInWord = false}
                     break
                 }
                     else if(inWordLetters.length - 1 === j){
@@ -197,11 +200,13 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     hardInWord = true
                 }
                 else if(currentRow[guessRow - 1][i].correct === 'correct' && currentRow[guessRow][i].letter !== solution[i]){
+                    if(hiddenAlert===false){}
+                    else{
                     setHiddenAlert(false)
                     setMessage(`${currentRow[guessRow-1][i].letter} must be correct`)
                     setShake(true)
                     setTimeout(handleAnimations, 350)
-                    hardCorrect = false
+                    hardCorrect = false}
                     break
                 }
                 else if(i === 4){
@@ -270,17 +275,21 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         }
         else{
             if(guessCol !==5){
+                if(hiddenAlert===false){}
+                else{
                 setHiddenAlert(false)
                 setShake(true)
                 setMessage("Not enough letters")
-                setTimeout(handleAnimations, 350)
+                setTimeout(handleAnimations, 350)}
                 
             }
             else{
-                setShake(true)
+                if(hiddenAlert===false){}
+                else{
                 setHiddenAlert(false)
+                setShake(true)
                 setMessage("Not in word list")
-                setTimeout(handleAnimations, 350)
+                setTimeout(handleAnimations, 350)}
                 
             }
         }
