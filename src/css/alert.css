@@ -7,11 +7,31 @@
     width:170px;
     height:50px;
     align-content: center;
+    
     line-height: 50px;
     margin-left: -85px;
-    animation: fadeOut 2.6s linear;
+    animation-delay: 500ms;
     border-radius: 4px;
     font-weight: 600;
+}
+
+.hard-mode-alert{
+  display: flex;
+  position:absolute;
+    top: 10%;
+    left:50%;
+    background-color:rgb(32, 32, 32);
+    color:white;
+    width:300px;
+    height:auto;
+    align-content: center;
+    margin-left: -150px;
+    animation: fadeOut 3.5s linear;
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 100000;
+    flex-wrap: wrap;
+    
 }
 
 .alert-light{
@@ -19,9 +39,10 @@
     background-color: white;
 }
 
+.fade{
+  animation: fadeOut 2.2s linear;
+}
 
-
- 
   @keyframes fadeOut {
     0% { opacity: 1; }
     85% { opacity: .9; }

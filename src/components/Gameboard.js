@@ -5,10 +5,8 @@ import {VALIDGUESSES} from '../words/validguesses'
 import Modals from './Modals';
 
 
-function Gameboard({darkMode, colorBlind}){
-    const keysRowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
-    const keysRowTwo = [ 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
-    const keysRowThree = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
+    const keysRow = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'DEL']
 
 
     const [rows, setRows] = useState([])
@@ -20,11 +18,11 @@ function Gameboard({darkMode, colorBlind}){
     const [wrongLetters, setwrongLetters] = useState([])
     const [correctLetters, setCorrectLetters] = useState([])
     const [inWordLetters, setInWordLetters] = useState([])
-    const [guesses, setGuesses] = useState(0)
     const [solution, setSolution] = useState("")
     const [correctSolution, setCorrectSolution] = useState("")
     const [message, setMessage] = useState("")
     const [hiddenAlert, setHiddenAlert] = useState(true)
+    const [shake, setShake] = useState(false)
 
     useEffect(()=> {
         let newRows = []
@@ -75,7 +73,7 @@ function Gameboard({darkMode, colorBlind}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""}`} key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""}`} key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -85,28 +83,16 @@ function Gameboard({darkMode, colorBlind}){
         return(
             <div className="keyboard">
             <div className="keys">
-                {keysRowOne.map((x) => {return(
-                    <button className={`key ${darkMode?"key-dark-mode":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}`}  key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
+                {keysRow.map((x) => {return(
+                    <button className={`key ${x} ${darkMode?"key-dark-mode ":""} ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}`} key={x} value={x} onClick={x==='DEL'?() => handleDel():x==='ENTER'? () => handleSubmit(): (e) => handleClick(e)}>{x}</button>
                 )})}
-            </div>
-            <div className="keys">
-                {keysRowTwo.map((x) => {return(
-                    <button className={`key ${darkMode?"key-dark-mode":""}  ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}` }  key={x} value={x} onClick={(e) => {handleClick(e)}}>{x}</button>
-                )})}
-            </div>
-            <div className="keys">
-                <button className={`key enter-key ${darkMode?"key-dark-mode ":""} `} onClick={(() => handleSubmit())}>ENTER</button>
-                {keysRowThree.map((x) => {return(
-                    <button className={`key ${darkMode?"key-dark-mode ":""} ${wrongLetters.includes(x) && 'key-wrong-letter'} ${wrongLetters.includes(x) && darkMode?'key-wrong-letter-dark':''} ${correctLetters.includes(x) && 'key-correct-letter'} ${correctLetters.includes(x) && colorBlind?'key-correct-letter-color-blind':''} ${inWordLetters.includes(x) && 'key-inWord-letter'} ${inWordLetters.includes(x) && colorBlind?'key-inWord-letter-color-blind':''}`} key={x} value={x} onClick={(e) => handleClick(e)}>{x}</button>
-                )})}
-                <button className={`key delete-key ${darkMode?"key-dark-mode ":""}`} onClick={(() => handleDel())} >DEL</button>
             </div>
         </div>
     )}
 
     function Alert(){
         return(
-            <div className={`invalid-alert ${darkMode?"alert-light":""}`} hidden={hiddenAlert} >
+            <div className={`invalid-alert ${darkMode?"alert-light":""} fade`} hidden={hiddenAlert} >
                 {message}
             </div>
         )
@@ -116,7 +102,13 @@ function Gameboard({darkMode, colorBlind}){
         if(gameOver){
 
         }
+        
         else if(guessCol<5 && !isCorrect){
+            
+            if(!hiddenAlert){
+                setHiddenAlert(true)
+            }
+
             setCorrectSolution(solution)
             const currentRow = [...rows]
             currentRow[guessRow][guessCol].letter = e.target.value
@@ -129,6 +121,10 @@ function Gameboard({darkMode, colorBlind}){
 
     const handleDel = () => {
         if(guessCol>0){
+            if(!hiddenAlert){
+                setHiddenAlert(true)
+            }
+            
             const currentRow = [...rows]
             currentRow[guessRow][guessCol-1].letter = ''
             setRows(currentRow)
@@ -137,9 +133,8 @@ function Gameboard({darkMode, colorBlind}){
         }
     }
 
-    const handleMessage = () => {
-        setHiddenAlert(true)
-        setMessage("")
+    const handleAnimations = () => {
+        setShake(false)
     }
 
     const handleSubmit = () => {
@@ -150,8 +145,57 @@ function Gameboard({darkMode, colorBlind}){
         const repeatCorrectLetters = []
         const repeatInWordLetters = []
         const solutionX = [...solution]
+        const guessX = [...guess]
+        let hardCorrect = false
+        let hardInWord = false
+
         if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
         if(guessCol ===5){
+            if(hardMode){
+
+                for( let j = 0; j < inWordLetters.length; j++){
+                    console.log(inWordLetters.length)
+                    if(inWordLetters.length === 0){
+                        hardInWord = true
+                    }
+                    else if(!guessX.includes(inWordLetters[j] )){
+                    console.log(inWordLetters.length)
+                    setHiddenAlert(false)
+                    setMessage(`${inWordLetters[j]} must be included`)
+                    setShake(true)
+                    setTimeout(handleAnimations, 350)
+                    hardInWord = false
+                    break
+                }
+                    else if(inWordLetters.length - 1 === j){
+                    hardInWord = true
+                
+            }
+            }}
+            
+            for(let i=0; i< 5; i++){
+                if(guessRow === 0){
+                    hardCorrect = true
+                    hardInWord = true
+                }
+                else if(currentRow[guessRow - 1][i].correct === 'correct' && currentRow[guessRow][i].letter !== solution[i]){
+                    setHiddenAlert(false)
+                    setMessage(`${currentRow[guessRow-1][i].letter} must be correct`)
+                    setShake(true)
+                    setTimeout(handleAnimations, 350)
+                    hardCorrect = false
+                    break
+                }
+                else if(i === 4){
+                    if(inWordLetters.length === 0){
+                        hardInWord = true
+                    }
+                    hardCorrect = true
+                }
+                }
+
+            if((hardCorrect && hardInWord) || !hardMode){
+
             for(let i=0; i< 5; i++){
                 if(currentRow[guessRow][i].letter === solution[i]){
                     currentRow[guessRow][i].correct = 'correct'
@@ -162,55 +206,67 @@ function Gameboard({darkMode, colorBlind}){
                     setRows(currentRow)
                 }
             }
+
             for(let i=0; i< 5; i++){
+                console.log(i)
+
                 if(currentRow[guessRow][i].letter === solution[i]){
                     currentRow[guessRow][i].correct = 'correct'
                 }
                 else if(solution.includes(currentRow[guessRow][i].letter)){
-                
-                if (solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length === repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
-                    currentRow[guessRow][i].correct = 'wrong'
-                }
-                else if(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length !== repeatInWordLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
-                    currentInWordLetters.push(currentRow[guessRow][i].letter)
-                    repeatInWordLetters.push(currentRow[guessRow][i].letter)
                     
-                    currentRow[guessRow][i].correct = 'inWord'
+                    if (solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length === repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
+                        currentRow[guessRow][i].correct = 'wrong'
+                    }
+                    else if(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length !== repeatInWordLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
+                        currentInWordLetters.push(currentRow[guessRow][i].letter)
+                        repeatInWordLetters.push(currentRow[guessRow][i].letter)
+                        
+                        currentRow[guessRow][i].correct = 'inWord'
+                    }
+                    else{
+                        currentRow[guessRow][i].correct = 'wrong'
+                    }
+                        
+                    setRows(currentRow)
                 }
                 else{
                     currentRow[guessRow][i].correct = 'wrong'
+                    if(!wrongLetters.includes(currentRow[guessRow][i].letter)){
+                        if(!currentWrongLetters.includes(currentRow[guessRow][i].letter)){
+                        currentWrongLetters.push(currentRow[guessRow][i].letter)}
                 }
+                setRows(currentRow)
+            }
+                if(i===4){
+
                     
-                setRows(currentRow)
-            }
-            else{
-                currentRow[guessRow][i].correct = 'wrong'
-                if(!wrongLetters.includes(currentRow[guessRow][i].letter)){
-                    if(!currentWrongLetters.includes(currentRow[guessRow][i].letter)){
-                    currentWrongLetters.push(currentRow[guessRow][i].letter)}
-                }
-                setRows(currentRow)
-            }
-            }
                 setGuessRow(guessRow+1)
                 setGuessCol(0)
                 setwrongLetters(wrongLetters.concat(currentWrongLetters))
                 setInWordLetters(inWordLetters.concat(currentInWordLetters))
                 setCorrectLetters(correctLetters.concat(currentCorrectLetters))
                 setGuesses(guesses + 1)
-               
+                console.log(guesses)
+                }
+            }}
+                    
         }
         }
         else{
             if(guessCol !==5){
                 setHiddenAlert(false)
+                setShake(true)
                 setMessage("Not enough letters")
-                setTimeout(handleMessage, 2500)
+                setTimeout(handleAnimations, 350)
+                
             }
             else{
+                setShake(true)
                 setHiddenAlert(false)
                 setMessage("Not in word list")
-                setTimeout(handleMessage, 2500)
+                setTimeout(handleAnimations, 350)
+                
             }
         }
     }

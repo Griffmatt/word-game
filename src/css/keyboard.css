@@ -1,11 +1,15 @@
 .keyboard{
     margin-top:5vw;
     padding-bottom: 3.1vw;
+    display: flex;
+    justify-content: center;
 }
 
 .keys{
     display:flex;
     justify-content: center;
+    flex-wrap: wrap;
+    width: 410px;
 }
 
 .key{
@@ -17,9 +21,9 @@
     margin: 3px;
     font-size: .85rem;
     font-weight:500;
-    max-width: 40px;
-    width: 7.6vw;
-    min-width: 22px;
+    max-width: 34px;
+    width: 8vw;
+    min-width: 25px;
     height:60px;
     border-radius: 5px;
     border: none;
@@ -30,23 +34,15 @@
     background-color: rgb(129, 132, 131);
 }
 
-
-.enter-key{
+.ENTER{
     min-width:50px;
-    max-width: 80px
+    width: 6.7vw;
+    max-width: 70px
 }
 
-.delete-key{
+.DEL{
     min-width:30px;
-    max-width: 50px;
-}
-
-
-.DEL:hover{
-    background-color: rgb(219, 105, 105)
-}
-.ENTER:hover{
-    background-color: rgb(67, 151, 230);
+    max-width: 45px;
 }
 
 .key-wrong-letter{

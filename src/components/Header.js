@@ -1,10 +1,11 @@
 import { Modal } from 'reactstrap';
 import React, {useState} from 'react';
 
-function Header({setDarkMode, darkMode, setColorBlind, colorBlind}) {
+function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, setHardMode, guesses}) {
 
   const [infoModalOpen, setInfoModalOpen] = useState(false)
   const [settingsModalOpen, setSettingsModalOpen] = useState(false)
+  const [hiddenAlert, setHiddenAlert] = useState(true)
 
   const handleClickInfo = () => {
     setInfoModalOpen(!infoModalOpen)
@@ -13,6 +14,27 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind}) {
   const handleClickSettings = () => {
     setSettingsModalOpen(!settingsModalOpen)
   }
+
+  const handleHardMode = () => {
+    setHardMode(!hardMode)
+  }
+
+  const handleAlert = () => {
+    setHiddenAlert(false)
+    setTimeout(handleMessage, 3400)
+  }
+
+  const handleMessage = () => {
+    setHiddenAlert(true)
+  }
+
+  function Alert(){
+    return(
+        <div className={`hard-mode-alert ${darkMode?"alert-light":""}`} hidden={hiddenAlert} >
+            Hard mode can only be enabled at the start of a round
+        </div>
+    )
+}
 
 
   return (
@@ -72,11 +94,11 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind}) {
         <div className="settings-mode">
           <div>
             <h2>Hard Mode</h2>
-            <p>Any revealed hints must be used in subsequent guesses(not finished yet)</p>
+            <p>Any revealed hints must be used in subsequent guesses</p>
           </div>
           <label className="switch">
-            <input type="checkbox"/>
-            <span className="slider round"></span>
+            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} />
+            <span className={`round ${!hardMode && guesses > 0? "hard-mode-slider": "slider"}`} onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})}></span>
           </label>
         </div>
         <div className="settings-mode">
@@ -101,6 +123,7 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind}) {
         </div>
       </div>
     </Modal>
+    <Alert/>
   </div>
   );
 }

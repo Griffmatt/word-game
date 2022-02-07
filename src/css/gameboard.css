@@ -50,3 +50,28 @@
 .gameboard-cell-correct-color-blind{
     background-color: rgb(245,121,58);
 }
+
+.shake{
+    animation: shake 350ms ease-in-out;
+}
+
+@keyframes shake {
+    10%{
+        transform:translateX(-5%);
+    }
+    30%{
+        transform:translateX(5%);
+    }
+    50%{
+        transform:translateX(-7.5%);
+    }
+    70%{
+        transform:translateX(7.5%);
+    }
+    90%{
+        transform:translateX(-5%);
+    }
+    100%{
+        transform:translateX(0%);
+    }
+}
