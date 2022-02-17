@@ -68,8 +68,8 @@
 }
 
 .info-cell{
-    border: 2px solid rgb(218, 218, 218);
-    background-color: white;
+    border: 2px solid rgb(177, 177, 177);
+    
     width: 12vw;
     height: 12vw;
     max-width: 40px;
@@ -83,52 +83,55 @@
     justify-content: center;
 }
 
-.info-correct{
-    background-color: rgb(32, 173, 68);
+.info-dark{
     color: white;
-    width: 12vw;
-    height: 12vw;
-    max-width: 40px;
-    max-height: 40px;
-    margin: 2px;
-    font-size: 2rem;
-    font-weight: 700;
-    display:flex;
-    align-items: center;
-    justify-content: center;
+}
+
+.info-correct{
+    background-color: rgb(106,170,100);
+    border: none;
+    color: white;
+    animation: rotate 400ms linear;
+    animation-delay: 325ms;
 }
 
 
 
 .info-inWord{
-    background-color: rgb(190, 168, 42);
+    background-color: rgb(201,180,88);
+    border: none;
     color: white;
-    width: 12vw;
-    height: 12vw;
-    max-width: 40px;
-    max-height: 40px;
-    margin: 2px;
-    font-size: 2rem;
-    font-weight: 700;
-    display:flex;
-    align-items: center;
-    justify-content: center;
+    animation: rotate 400ms linear;
+    animation-delay: 325ms;
+    
 }
 
 .info-wrong{
-    background-color: rgb(117, 117, 117);
+    background-color: rgb(120,124,126);
+    border: none;
     color: white;
-    width: 12vw;
-    height: 12vw;
-    max-width: 40px;
-    max-height: 40px;
-    margin: 2px;
-    font-size: 2rem;
-    font-weight: 700;
-    display:flex;
-    align-items: center;
-    justify-content: center;
+    animation: rotate 400ms linear;
+    animation-delay: 325ms;
+   
 }
+
+@keyframes rotate{
+    0%{
+        transform:  rotatex(180deg);
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    75%{
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    100%{
+        transform:  rotatex(360deg);
+    }
+}
+
 
 .info-body > h2{
     font-size: .9rem;

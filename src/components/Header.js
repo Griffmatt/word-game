@@ -58,27 +58,27 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
         <div className="info-body">
           <h2><strong>EXAMPLES</strong></h2>
           <div className="info-row">
-          <div  className="info-correct" >W</div>
-          <div  className="info-cell" >E</div>
-          <div  className="info-cell" >A</div>
-          <div className="info-cell" >R</div>
-          <div className="info-cell" >Y</div>
+          <div  className="info-correct info-cell info-flip" >W</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >E</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >A</div>
+          <div className={`info-cell ${darkMode? 'info-dark':""}`} >R</div>
+          <div className={`info-cell ${darkMode? 'info-dark':""}`} >Y</div>
         </div>
         <p>The letter <strong>W</strong> is in the word and in the correct spot.</p>
         <div className="info-row">
-          <div  className="info-cell" >P</div>
-          <div  className="info-inWord" >I</div>
-          <div  className="info-cell" >L</div>
-          <div className="info-cell" >L</div>
-          <div className="info-cell" >S</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >P</div>
+          <div  className="info-inWord info-cell info-flip" >I</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >L</div>
+          <div className={`info-cell ${darkMode? 'info-dark':""}`} >L</div>
+          <div className={`info-cell ${darkMode? 'info-dark':""}`}>S</div>
         </div>
         <p>The letter <strong>I</strong> is in the word but in the wrong spot.</p>
         <div className="info-row">
-          <div  className="info-cell" >V</div>
-          <div  className="info-cell" >A</div>
-          <div  className="info-cell" >G</div>
-          <div className="info-wrong" >U</div>
-          <div className="info-cell" >E</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >V</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >A</div>
+          <div  className={`info-cell ${darkMode? 'info-dark':""}`} >G</div>
+          <div className="info-wrong info-cell info-flip" >U</div>
+          <div className={`info-cell ${darkMode? 'info-dark':""}`} >E</div>
         </div>
         <p>The letter <strong>U</strong> is not in the word in any spot.</p>
       </div>

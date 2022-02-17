@@ -24,7 +24,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [hiddenAlert, setHiddenAlert] = useState(true)
     const [shake, setShake] = useState(false)
     const [flip, setFlip] = useState(false)
-    const [flipped, setFlipped] = useState(false)
     const [deleted, setDeleted] = useState(false)
 
     useEffect(()=> {
@@ -35,7 +34,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
 
         for(let i = 0; i<6; i++){
             for(let j = 0; j<5; j++){
-                newRows[i].push({letter: '', correct: ''})
+                newRows[i].push({letter: '', correct: '', flipped: false})
             }
         }
         
@@ -76,7 +75,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell ${flipped || rowIndex<guessRow?`gameboard-cell-${col.correct}`:""} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? "flip": ""} ${col.letter !== "" && colIndex +1 >= guessCol && !deleted && rowIndex === guessRow? "grow": rowIndex === guessRow && col.letter !== "" ?"entered":""}`}   key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? `flip`: ""} ${col.letter !== "" && colIndex +1 >= guessCol && !deleted && rowIndex === guessRow? "grow": rowIndex === guessRow && col.letter !== "" ?"entered":""}`}   key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -145,14 +144,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         setTimeout(handleFade, 2100)
     }
 
-    const handleFlip = () => {
-        setFlipped(true)
-        setGuessRow(guessRow+1)
-        setGuessCol(0)
-        setGuesses(guesses + 1)
-        setFlip(false)
-          
-    }
 
    
     const handleSubmit = () => {
@@ -166,8 +157,18 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         const guessX = [...guess]
         let hardCorrect = false
         let hardInWord = false
-        setFlipped(false)
         setDeleted(true)
+
+        const handleFlip = () => {
+            setGuessRow(guessRow+1)
+            setGuessCol(0)
+            setGuesses(guesses + 1)
+            setwrongLetters(wrongLetters.concat(currentWrongLetters))
+            setInWordLetters(inWordLetters.concat(currentInWordLetters))
+            setCorrectLetters(correctLetters.concat(currentCorrectLetters))
+            setFlip(false)
+              
+        }
 
         if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
         if(guessCol ===5){
@@ -220,7 +221,10 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
 
             if((hardCorrect && hardInWord) || !hardMode){
 
+
+
             for(let i=0; i< 5; i++){
+
                 if(currentRow[guessRow][i].letter === solution[i]){
                     currentRow[guessRow][i].correct = 'correct'
                     if(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length !== repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
@@ -228,13 +232,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                         currentCorrectLetters.push(currentRow[guessRow][i].letter)}
                     
                     setRows(currentRow)
-                }
-            }
-
-            for(let i=0; i< 5; i++){
-
-                if(currentRow[guessRow][i].letter === solution[i]){
-                    currentRow[guessRow][i].correct = 'correct'
+    
                 }
                 else if(solution.includes(currentRow[guessRow][i].letter)){
                     
@@ -263,11 +261,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             }
                 if(i===4){
                     setFlip(true)
-                    setTimeout(handleFlip, 300)
-                    setwrongLetters(wrongLetters.concat(currentWrongLetters))
-                    setInWordLetters(inWordLetters.concat(currentInWordLetters))
-                    setCorrectLetters(correctLetters.concat(currentCorrectLetters))
-                    
+                    setTimeout(handleFlip, 500)
                 }
             }}
                     
