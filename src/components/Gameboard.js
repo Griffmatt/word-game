@@ -23,7 +23,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [message, setMessage] = useState("")
     const [hiddenAlert, setHiddenAlert] = useState(true)
     const [shake, setShake] = useState(false)
-    const [flip, setFlip] = useState(false)
     const [deleted, setDeleted] = useState(false)
 
     useEffect(()=> {
@@ -34,7 +33,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
 
         for(let i = 0; i<6; i++){
             for(let j = 0; j<5; j++){
-                newRows[i].push({letter: '', correct: '', flipped: false})
+                newRows[i].push({letter: '', correct: ''})
             }
         }
         
@@ -75,7 +74,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                     <div className="gameboard-row" key={rowIndex}>
                         {rows[rowIndex].map((col, colIndex) =>{
                             return(
-                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell gameboard-cell-${col.correct} ${colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${flip && guessRow=== rowIndex? `flip`: ""} ${col.letter !== "" && colIndex +1 >= guessCol && !deleted && rowIndex === guessRow? "grow": rowIndex === guessRow && col.letter !== "" ?"entered":""}`}   key={colIndex} value={col.letter}>{col.letter}</div>
+                            <div className={`${darkMode? "": "gameboard-cell-dark"} gameboard-cell ${ rowIndex < guessRow?`gameboard-cell-${col.correct}`: ""} ${rowIndex < guessRow && colorBlind? `gameboard-cell-${col.correct}-color-blind`:""} ${shake && rowIndex===guessRow? "shake": ""} ${col.letter !== "" && colIndex +1 >= guessCol && !deleted && rowIndex === guessRow? "grow": rowIndex === guessRow && col.letter !== "" ?"entered":""}`}   id={`cell-${colIndex}-${rowIndex}`} key={colIndex} value={col.letter}>{col.letter}</div>
                         )})}
                     </div>)})}
                 </>
@@ -166,7 +165,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             setwrongLetters(wrongLetters.concat(currentWrongLetters))
             setInWordLetters(inWordLetters.concat(currentInWordLetters))
             setCorrectLetters(correctLetters.concat(currentCorrectLetters))
-            setFlip(false)
               
         }
 
@@ -260,8 +258,14 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                 setRows(currentRow)
             }
                 if(i===4){
-                    setFlip(true)
-                    setTimeout(handleFlip, 500)
+                    currentRow[guessRow].forEach((answer, index) => {
+                        setTimeout(function(){
+                            document.getElementById(`cell-${index}-${guessRow}`).classList.add('flip')
+                            document.getElementById(`cell-${index}-${guessRow}`).classList.add(colorBlind? `gameboard-cell-${answer.correct}-color-blind`:`gameboard-cell-${answer.correct}`)
+                        }, index * 500)
+    
+                    });
+                    setTimeout(handleFlip, 2500)
                 }
             }}
                     

@@ -9,17 +9,16 @@
 
 .gameboard-cell{
     border: 2px solid rgb(86,87,88);
-    width: 12vw;
-    height: 12vw;
+    width: 11.1vw;
+    height: 11.1vw;
     max-width: 53px;
     max-height: 53px;
     margin: 3px;
-    font-size: 2.2rem;
+    font-size: min(47px, 9vw);
     font-weight: 700;
     display:flex;
     align-items: center;
     justify-content: center;
-    
 }
 
 .gameboard-cell-dark{
@@ -46,27 +45,24 @@
 
 .gameboard-cell-inWord-color-blind{
     background-color: rgb(133,192,249);
+    color: white;
+    border: none;
 }
 
 .gameboard-cell-correct-color-blind{
     background-color: rgb(245,121,58);
+    color: white;
+    border: none;
+}
+
+.gameboard-cell-wrong-color-blind{
+    background-color: rgb(120,124,126);
+    color: white;
+    border: none;
 }
 
 .shake{
     animation: shake 350ms ease-in-out;
-}
-
-.flip{
-    animation: rotate 500ms linear;
-}
-
-.grow{
-    animation: scale 200ms linear;
-    border-color: rgb(141, 145, 146);
-}
-
-.entered{
-    border-color: rgb(141, 145, 146);
 }
 
 @keyframes shake {
@@ -88,6 +84,36 @@
     100%{
         transform:translateX(0%);
     }
+}
+
+.flip{
+    animation: rotate 500ms linear;
+}
+
+@keyframes rotate{
+    0%{
+        transform:  rotatex(180deg);
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    75%{
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    100%{
+        transform:  rotatex(360deg);
+    }
+}
+
+.grow{
+    animation: scale 200ms linear;
+    border-color: rgb(141, 145, 146);
+}
+
+.entered{
+    border-color: rgb(141, 145, 146);
 }
 
 @keyframes scale{

@@ -91,8 +91,6 @@
     background-color: rgb(106,170,100);
     border: none;
     color: white;
-    animation: rotate 400ms linear;
-    animation-delay: 325ms;
 }
 
 
@@ -100,36 +98,18 @@
 .info-inWord{
     background-color: rgb(201,180,88);
     border: none;
-    color: white;
-    animation: rotate 400ms linear;
-    animation-delay: 325ms;
-    
+    color: white;  
 }
 
 .info-wrong{
     background-color: rgb(120,124,126);
     border: none;
-    color: white;
-    animation: rotate 400ms linear;
-    animation-delay: 325ms;
-   
+    color: white; 
 }
 
-@keyframes rotate{
-    0%{
-        transform:  rotatex(180deg);
-        background-color: rgb(0, 0, 0, 0);
-        border: 2px solid rgb(177, 177, 177);
-        color:rgba(0, 0, 0, 0);
-    }
-    75%{
-        background-color: rgb(0, 0, 0, 0);
-        border: 2px solid rgb(177, 177, 177);
-        color:rgba(0, 0, 0, 0);
-    }
-    100%{
-        transform:  rotatex(360deg);
-    }
+.info-flip{
+    animation: rotate 400ms linear;
+    animation-delay: 325ms;
 }
 
 
