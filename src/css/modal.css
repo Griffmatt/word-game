@@ -5,12 +5,12 @@
     border-bottom: 3px solid gray;
 }
 
-.modal-body > div{
+.modal-body{
     display:flex;
     justify-content: center;
 }
 
-.modal-body > div > button{
+.modal-body > button{
     border: none;
     background-color: rgb(0, 112, 187);
     color: white;
@@ -108,8 +108,9 @@
 }
 
 .info-flip{
-    animation: rotate 400ms linear;
+    animation: rotate 500ms linear;
     animation-delay: 325ms;
+    -webkit-animation: rotate 500ms linear;
 }
 
 
@@ -140,4 +141,13 @@
 
 .settings{
     margin-bottom: 60px;
+}
+.modal-stats{
+    display: flex;
+    justify-content: center;
+}
+.modal-stats > h3{
+    font-size: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
 }

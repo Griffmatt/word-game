@@ -24,6 +24,31 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [hiddenAlert, setHiddenAlert] = useState(true)
     const [shake, setShake] = useState(false)
     const [deleted, setDeleted] = useState(false)
+    const [flipping, setFlipping] = useState(false)
+    const [gamesPlayed, setGamesPlayed] = useState(0)
+    const [gamesWon, setGamesWon] = useState(0)
+    const [currentStreak, setCurrentStreak] = useState(0)
+    const [averageGuess, setAverageGuess] = useState(0)
+
+    useEffect(()=>{
+        const won = localStorage.getItem("Won");
+        const played = localStorage.getItem("Played");
+        const streak = localStorage.getItem("Streak");
+        const guess = localStorage.getItem("Guess");
+        if(gamesPlayed>0){
+        setGamesWon(parseInt(won))
+        setGamesPlayed(parseInt(played))
+        setCurrentStreak(parseInt(streak))
+        setAverageGuess(parseInt(guess))}
+      }, [])
+    
+      useEffect(()=>{
+          console.log(gamesWon)
+        localStorage.setItem('Won', JSON.stringify(gamesWon))
+        localStorage.setItem('Played', JSON.stringify(gamesPlayed))
+        localStorage.setItem('Streak', JSON.stringify(currentStreak))
+        localStorage.setItem('Guess', JSON.stringify(averageGuess))
+      })
 
     useEffect(()=> {
         let newRows = []
@@ -41,10 +66,23 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         setRows(newRows)
         setSolution(WORDS[Math.floor(Math.random() * (WORDS.length - 1) + 1)].toUpperCase())
         }else if(guess === solution && guessCol===0){
-            setIsCorrect(true)
+            
+            rows[guessRow].forEach((answer, index) => {
+                    setTimeout(()=>{
+                    document.getElementById(`cell-${index}-${guessRow-1}`).classList.add('jump')
+                }, 100 * index)
+            })
+            setTimeout(() => {setIsCorrect(true)}, 1000)
+            console.log(gamesWon)
+            setGamesPlayed(gamesPlayed+1)
+            setGamesWon(gamesWon+1)
+            setCurrentStreak(currentStreak+1)
+            setAverageGuess(((averageGuess*gamesPlayed)+ (guesses+1))/(gamesPlayed+1))
         }
-        else if(guessRow === 6){
+        else if(guessRow === 6 && !gameOver){
             setGameOver(true)
+            setGamesPlayed(gamesPlayed+1)
+            setCurrentStreak(0)
         }
         else if(guessCol === 0){
             setGuess('')
@@ -165,10 +203,11 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             setwrongLetters(wrongLetters.concat(currentWrongLetters))
             setInWordLetters(inWordLetters.concat(currentInWordLetters))
             setCorrectLetters(correctLetters.concat(currentCorrectLetters))
+            setFlipping(false)
               
         }
-
-        if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
+        if(flipping){}
+        else if(VALIDGUESSES.includes(guess.toLowerCase()) || WORDS.includes(guess.toLowerCase())){
         if(guessCol ===5){
             if(hardMode){
 
@@ -219,7 +258,18 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
 
             if((hardCorrect && hardInWord) || !hardMode){
 
+                for(let i=0; i< 5; i++){
 
+                    if(currentRow[guessRow][i].letter === solution[i]){
+                        currentRow[guessRow][i].correct = 'correct'
+                        if(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length !== repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
+                            repeatCorrectLetters.push(currentRow[guessRow][i].letter)
+                            currentCorrectLetters.push(currentRow[guessRow][i].letter)}
+                        
+                        setRows(currentRow)
+        
+                    }
+                }
 
             for(let i=0; i< 5; i++){
 
@@ -258,11 +308,12 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                 setRows(currentRow)
             }
                 if(i===4){
+                    setFlipping(true)
                     currentRow[guessRow].forEach((answer, index) => {
-                        setTimeout(function(){
+                        setTimeout(()=>{
                             document.getElementById(`cell-${index}-${guessRow}`).classList.add('flip')
                             document.getElementById(`cell-${index}-${guessRow}`).classList.add(colorBlind? `gameboard-cell-${answer.correct}-color-blind`:`gameboard-cell-${answer.correct}`)
-                        }, index * 500)
+                        }, index * 400)
     
                     });
                     setTimeout(handleFlip, 2500)
@@ -298,7 +349,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         <div className="gameboard">
             <Gameboardrow />
             <Keyboardrow />
-            <Modals handleReset={handleReset} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode}/>
+            <Modals handleReset={handleReset} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode} gamesPlayed={gamesPlayed} gamesWon={gamesWon} averageGuess={averageGuess} currentStreak={currentStreak} />
             <Alert/>
         </div>
     )

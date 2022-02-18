@@ -9,8 +9,8 @@
 
 .gameboard-cell{
     border: 2px solid rgb(86,87,88);
-    width: 11.1vw;
-    height: 11.1vw;
+    width: 11vw;
+    height: 11vw;
     max-width: 53px;
     max-height: 53px;
     margin: 3px;
@@ -88,9 +88,27 @@
 
 .flip{
     animation: rotate 500ms linear;
+    -webkit-animation: rotate 500ms linear;
 }
 
 @keyframes rotate{
+    0%{
+        transform:  rotatex(180deg);
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    75%{
+        background-color: rgb(0, 0, 0, 0);
+        border: 2px solid rgb(177, 177, 177);
+        color:rgba(0, 0, 0, 0);
+    }
+    100%{
+        transform:  rotatex(360deg);
+    }
+}
+
+@-webkit-keyframes rotate{
     0%{
         transform:  rotatex(180deg);
         background-color: rgb(0, 0, 0, 0);
@@ -124,5 +142,30 @@
     100% {
         transform: scale(1.1);
     
+    }
+}
+
+.jump{
+    animation: jump 500ms linear;
+}
+
+@keyframes jump {
+    20%{
+        transform: translateY(-50%)
+    }
+    40%{
+        transform: translateY(5%)
+    }
+    60%{
+        transform: translateY(25%)
+    }
+    80%{
+        transform: translateY(2.5%)
+    }
+    90%{
+        transform: translateY(-5%)
+    }
+    100%{
+        transform: translateY(0%)
     }
 }
