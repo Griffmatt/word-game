@@ -30,7 +30,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [currentStreak, setCurrentStreak] = useState(0)
     const [averageGuess, setAverageGuess] = useState(0)
 
-    useEffect(()=>{
+    /*useEffect(()=>{
         const won = localStorage.getItem("Won");
         const played = localStorage.getItem("Played");
         const streak = localStorage.getItem("Streak");
@@ -43,12 +43,11 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
       }, [])
     
       useEffect(()=>{
-          console.log(gamesWon)
         localStorage.setItem('Won', JSON.stringify(gamesWon))
         localStorage.setItem('Played', JSON.stringify(gamesPlayed))
         localStorage.setItem('Streak', JSON.stringify(currentStreak))
         localStorage.setItem('Guess', JSON.stringify(averageGuess))
-      })
+      })*/
 
     useEffect(()=> {
         let newRows = []

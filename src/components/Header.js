@@ -97,8 +97,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>Any revealed hints must be used in subsequent guesses</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} />
-            <span className={`round ${!hardMode && guesses > 0? "hard-mode-slider": "slider"}`} onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})}></span>
+            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} id={hardMode}/>
+            <span className={`round ${!hardMode && guesses > 0? "hard-mode-slider": "slider"}`} onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})} for={hardMode} />
           </label>
         </div>
         <div className="settings-mode">
@@ -106,8 +106,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <h2>Dark Mode</h2>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`}/>
-            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})}></span>
+            <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`} id={darkMode}/>
+            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})} for={darkMode} />
           </label>
         </div>
         <div className="settings-mode">
@@ -116,8 +116,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>High contrast colors</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`}/>
-            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})}></span>
+            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`} id={colorBlind}/>
+            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})} for={colorBlind}/>
           </label>
         </div>
         </div>

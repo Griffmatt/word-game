@@ -4,7 +4,7 @@ import {Modal} from 'reactstrap'
 function Modals({handleReset, gameOver, solution, isCorrect, darkMode, gamesWon, gamesPlayed, averageGuess, currentStreak}) {
 
     let guessAverage = Math.round(100*averageGuess) / 100
-    let winPercentage = (gamesWon/gamesPlayed) *100
+    let winPercentage = Math.round((gamesWon/gamesPlayed) *10000)/100
         return(
             <div>
             <Modal isOpen={gameOver} toggle={handleReset} >
