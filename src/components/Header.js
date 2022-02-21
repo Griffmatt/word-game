@@ -16,7 +16,18 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
   }
 
   const handleHardMode = () => {
+    if(guesses === 0){
     setHardMode(!hardMode)
+    return
+  }
+    if(guesses > 0 && hardMode){
+      setTimeout(handleDisableHardMode)
+      return
+    }
+  }
+
+  const handleDisableHardMode = () => {
+    setHardMode(false)
   }
 
   const handleAlert = () => {
@@ -97,8 +108,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>Any revealed hints must be used in subsequent guesses</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} id={hardMode}/>
-            <span className={`round ${!hardMode && guesses > 0? "hard-mode-slider": "slider"}`} onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})} for={hardMode} />
+            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} id="hardMode" disabled={guesses > 0 && !hardMode}/>
+            <span className="round slider" onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})} htmlFor="hardMode" />
           </label>
         </div>
         <div className="settings-mode">
@@ -106,8 +117,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <h2>Dark Mode</h2>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`} id={darkMode}/>
-            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})} for={darkMode} />
+            <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`} id="darkMode"/>
+            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})} htmlFor="darkMode" />
           </label>
         </div>
         <div className="settings-mode">
@@ -116,8 +127,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>High contrast colors</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`} id={colorBlind}/>
-            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})} for={colorBlind}/>
+            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`} id="colorBlind"/>
+            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})} htmlFor="colorBlind"/>
           </label>
         </div>
         </div>
