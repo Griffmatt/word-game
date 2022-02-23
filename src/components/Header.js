@@ -108,8 +108,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>Any revealed hints must be used in subsequent guesses</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${hardMode?"checked":""}`} id="hardMode" disabled={guesses > 0 && !hardMode}/>
-            <span className="round slider" onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})} htmlFor="hardMode" />
+            <input type="checkbox" disabled={guesses > 0 && !hardMode}  checked={hardMode}/>
+            <span className="round slider" onClick={(()=> {!hardMode && guesses > 0? handleAlert() : handleHardMode()})} />
           </label>
         </div>
         <div className="settings-mode">
@@ -117,8 +117,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <h2>Dark Mode</h2>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${darkMode?"checked":""}`} id="darkMode"/>
-            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})} htmlFor="darkMode" />
+            <input type="checkbox" checked={darkMode}/>
+            <span className="slider round" onClick={(()=> {setDarkMode(!darkMode)})}  />
           </label>
         </div>
         <div className="settings-mode">
@@ -127,8 +127,8 @@ function Header({setDarkMode, darkMode, setColorBlind, colorBlind, hardMode, set
             <p>High contrast colors</p>
           </div>
           <label className="switch">
-            <input type="checkbox" defaultChecked={`${colorBlind?"checked":""}`} id="colorBlind"/>
-            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})} htmlFor="colorBlind"/>
+            <input type="checkbox" checked={colorBlind} />
+            <span className="slider round" onClick={(()=> {setColorBlind(!colorBlind)})}/>
           </label>
         </div>
         </div>

@@ -29,18 +29,23 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
     const [gamesWon, setGamesWon] = useState(0)
     const [currentStreak, setCurrentStreak] = useState(0)
     const [averageGuess, setAverageGuess] = useState(0)
+    const [maxStreak, setMaxStreak] = useState(0)
+
+    const [resultMessage, setResultMessage] = useState("")
 
     useEffect(()=>{
         const won = localStorage.getItem("Won");
         const played = localStorage.getItem("Played");
         const streak = localStorage.getItem("Streak");
         const guess = localStorage.getItem("Guess");
-        if(gamesPlayed>0){
-            console.log("works")
-        setGamesWon(parseInt(won))
-        setGamesPlayed(parseInt(played))
-        setCurrentStreak(parseInt(streak))
-        setAverageGuess(parseInt(guess))}
+        const max = localStorage.getItem("Max")
+        if(played>0){
+            setGamesWon(parseInt(won))
+            setGamesPlayed(parseInt(played))
+            setCurrentStreak(parseInt(streak))
+            setAverageGuess(parseInt(guess))
+            setMaxStreak(parseInt(max))
+        }
       }, [])
     
     useEffect(()=>{
@@ -48,6 +53,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         localStorage.setItem('Played', JSON.stringify(gamesPlayed))
         localStorage.setItem('Streak', JSON.stringify(currentStreak))
         localStorage.setItem('Guess', JSON.stringify(averageGuess))
+        localStorage.setItem('Max', JSON.stringify(maxStreak))
     })
 
     useEffect(()=> {
@@ -64,28 +70,33 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         
         if (rows.length === 0){
         setRows(newRows)
-        /*setSolution(WORDS[Math.floor(Math.random() * (WORDS.length - 1) + 1)].toUpperCase())*/
-        setSolution("NIECE")
+        setSolution(WORDS[Math.floor(Math.random() * (WORDS.length - 1) + 1)].toUpperCase())
         }else if(guess === solution && guessCol===0){
-            console.log(guessRow)
             rows[guessRow-1].forEach((answer, index) => {
                     setTimeout(()=>{
                     document.getElementById(`cell-${index}-${guessRow-1}`).classList.add('jump')
                 }, 100 * index)
             })
             setTimeout(() => {setIsCorrect(true)}, 1000)
+            setResultMessage("You Win!!")
             setGamesPlayed(gamesPlayed+1)
             setGamesWon(gamesWon+1)
             setCurrentStreak(currentStreak+1)
-            setAverageGuess(((averageGuess*gamesPlayed)+ (guesses+1))/(gamesPlayed+1))
+            if(currentStreak + 1 > maxStreak){
+                setMaxStreak(maxStreak+1)
+            }
+            setAverageGuess(((((averageGuess/100)*gamesPlayed)+ (guesses+1))/(gamesPlayed+1)) *100)
         }
         else if(guessRow === 6 && !gameOver && guess !== solution){
             setGameOver(true)
+            setResultMessage("You Lose :(")
+            setAverageGuess(((((averageGuess/100)*gamesPlayed)+ (guesses+1))/(gamesPlayed+1)) *100)
             setGamesPlayed(gamesPlayed+1)
             setCurrentStreak(0)
         }
         else if(guessCol === 0){
             setGuess('')
+            
         }
     }, [rows, guess, guessCol, guessRow, solution])
 
@@ -211,7 +222,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
             if(hardMode){
 
                 for( let j = 0; j < inWordLetters.length; j++){
-                    console.log(inWordLetters.length)
                     if(inWordLetters.length === 0){
                         hardInWord = true
                     }
@@ -280,9 +290,6 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
                 else if(solution.includes(currentRow[guessRow][i].letter)){
                     
                     if (solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length === repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
-                        console.log(i)
-                        console.log(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length)
-                        console.log(repeatCorrectLetters.filter((x)=> currentRow[guessRow][i].letter===x).length)
                         currentRow[guessRow][i].correct = 'wrong'
                     }
                     else if(solutionX.filter((x)=> currentRow[guessRow][i].letter===x).length !== repeatInWordLetters.filter((x)=> currentRow[guessRow][i].letter===x).length){
@@ -347,7 +354,7 @@ function Gameboard({darkMode, colorBlind, setGuesses, guesses, hardMode}){
         <div className="gameboard">
             <Gameboardrow />
             <Keyboardrow />
-            <Modals handleReset={handleReset} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode} gamesPlayed={gamesPlayed} gamesWon={gamesWon} averageGuess={averageGuess} currentStreak={currentStreak} />
+            <Modals handleReset={handleReset} resultMessage={resultMessage} gameOver={gameOver} isCorrect={isCorrect} solution={correctSolution} darkMode={darkMode} gamesPlayed={gamesPlayed} gamesWon={gamesWon} averageGuess={averageGuess} maxStreak={maxStreak} currentStreak={currentStreak} />
             <Alert/>
         </div>
     )

@@ -7,10 +7,22 @@
 
 .modal-body{
     display:flex;
-    justify-content: center;
+    flex-direction: column;
+    text-align: center;
 }
 
-.modal-body > button{
+.modal-body > p{
+    margin-top:-12px;
+    font-size: 13px;
+}
+
+.modal-button{
+    display: flex;
+    justify-content: center;
+    margin-top:10px;
+}
+
+.modal-button > button{
     border: none;
     background-color: rgb(0, 112, 187);
     color: white;
@@ -18,7 +30,7 @@
     border-radius: 5px;
 }
 .info-modal{
-    padding: 10px;
+    padding: 8px;
 }
 
 .modal-background-dark{
@@ -109,8 +121,7 @@
 
 .info-flip{
     animation: rotate 500ms linear;
-    animation-delay: 325ms;
-    -webkit-animation: rotate 500ms linear;
+    animation-delay: 300ms;
 }
 
 
@@ -142,12 +153,27 @@
 .settings{
     margin-bottom: 60px;
 }
-.modal-stats{
+.modal-stats-row{
     display: flex;
     justify-content: center;
+    margin-left: 6vw;
+    margin-right: 6vw;
+    margin-top: -15px;
 }
+
+.modal-stats{
+    margin:8px;
+}
+
 .modal-stats > h3{
-    font-size: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+    font-size: 40px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom:-7px;
+}
+
+.modal-stats > p{
+    text-align: center;
+    font-size: 13px;
+    margin: -5px;
 }
